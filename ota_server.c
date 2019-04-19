@@ -4,6 +4,8 @@
 #include "esp_log.h"
 #include "esp_ota_ops.h"
 
+#include "driver/can.h"
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "lwip/sockets.h"
@@ -80,6 +82,8 @@ void ota_server_start()
     ESP_ERROR_CHECK( create_tcp_server() );
 
     const esp_partition_t *update_partition = esp_ota_get_next_update_partition(NULL);
+
+    can_stop();
 
     ESP_LOGI(TAG, "Writing to partition subtype %d at offset 0x%x",
     	update_partition->subtype, update_partition->address);
